@@ -1,0 +1,263 @@
+@startuml MDD
+skinparam style strictuml
+hide empty members
+title Diagramme de classe
+
+abstract class QGraphicsScene {
+}
+
+abstract class QMainWindow {
+}
+
+class BeeEcoSystem {
+  EcoSystem mGraphicsScene;
+	QGraphicsView * mSimulationView;
+	QParameters * mParameters;
+	QControlBar * mControlBar;
+	QPushButton * mAboutButton;
+}
+
+abstract class QGraphicsItem {
+}
+
+abstract class QGraphicsView {
+
+}
+
+abstract class LivingBeing {
+  protected mLifeTime : int
+  protected mAge : int
+  protected mColor : QColor
+  protected mAlive : bool
+
+  public isAlive() const : bool
+  public setAlive(alive : bool) : void
+
+  public virtual initPos() = 0 : void
+}
+
+abstract class ForagingInsect {
+  protected mSwarm : Swarm*
+  protected mNbrOfBirth : int
+
+  public swarm() : Swarm*
+}
+
+class Bee {
+  private mNbrOfloweringPlantToCreate : int
+
+  private static sShape : QRectF
+  private static sRadius : float
+
+  public isColliding(floweringPlant : const FloweringPlant*) const : bool
+  public stayInSwarm() : void
+
+  public paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override : void
+  public boundingRect() const override : QRectF
+  public advance(int phase) override : void
+  public initPos() override : void
+}
+
+class AsianHornet {
+  private mNumberOfBeeKilled : int
+  private mLimitOfKills : int 
+
+  private static sShape : QRectF
+  private static sRadius : float
+
+  public isColliding(swarmBees : const SwarmBees*) const : bool
+  public isColliding(bee : const Bee*) const : bool
+  public killBee(bee : Bee*) const : void
+  public stayInSwarm() : void
+
+  public paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override : void
+  public boundingRect() const override : QRectF
+  public advance(int phase) override : void
+  public initPos() override : void
+}
+
+ abstract class FloweringPlant {
+  protected mLifeRecovery : float
+
+  private static sRadius : float
+  private static sShape : QPolygonF
+
+  public virtual lifeRecovery(life : int) const = 0 : int
+
+  public paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override : void
+  public boundingRect() const override : QRectF
+  public advance(int phase) override : void
+  public initPos() override : void
+
+  public static shape() : QPolygonF
+  public static radius() : float
+  public static setRadius(radius : float) : void
+  public static chooseTypeOfFloweringPlant() : int
+}
+
+class Human {
+  private mLife : int
+  private mName : QString
+  private mHome : Home*
+  private mNbrOfloweringPlantToEat : int
+  private mGoKillAsianHornet : int
+  private mNbrOfBirth : int
+
+  private static sShape : QRectF
+  private static sSize : float
+
+  public life() const : int
+  public setLife(life : int) : void
+  public setGoKillAsianHornet(goKillAsianHornet : int) : void
+
+  public eat(flowerPlant : FlowerPlant*) : void
+  public isColliding(floweringPlant : const FloweringPlant*) : bool
+  public isColliding(swarmAsianHornet : const SwarmAsianHornet*) : bool
+  public stayInHome() : void
+
+  public paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override : void
+  public boundingRect() const override : QRectF
+  public advance(int phase) override : void
+  public initPos() override : void
+}
+
+abstract class ObjectMotion {
+  protected mSpeed : QPointF
+  protected mDestination : QPointF
+  protected mNewPosition : QPointF
+  protected mIsOutside : bool
+  protected mAmplitudeSpeed : float
+
+  public setIsOutside(isOutside : bool) : void
+
+	public isCollidingScene() const : bool
+  public moovingTo(& position : QPoint) : void
+}
+
+class Home {
+  public birth() override : void
+
+  private static sSize : float
+
+  public paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override : void
+  public boundingRect() const override : QRectF
+  public initPos() override : void
+
+  public static size() : float
+}
+
+class Aubergine {
+  public lifeRecovery(life : int) const override : void
+}
+
+class Tomato {
+  public lifeRecovery(life : int) const override : void
+}
+
+class Courgette {
+  public lifeRecovery(life : int) const override : void
+}
+
+abstract class Swarm {
+  private static sSize : float
+
+  public paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget = 0) override : void
+  public boundingRect() const override : QRectF
+
+  public static size() : float
+}
+
+class SwarmBees {
+  public birth() override : void
+  public initPos() override : void
+}
+
+class SwarmAsianHornets {
+  public birth() override : void
+  public initPos() override : void
+}
+
+class EcoSystem {
+  private static sElapsedTime : float
+
+  public killAsianHornet(swarmAsianHornet : SwarmAsianHornet*) const : void
+  public isEnoughFood() const : bool
+  public randomFloweringPlant() const : FloweringPlant*
+  public toSting(&human : Human, &swarmAsianHornet : const SwarmAsianHornet) const : void
+  public sendHumanKillAsianHornet(human : Human*) const : void
+  public setAllGoKillAsianHornetToNull() const : void
+  public allAsianHornetDead() const : bool
+
+  public static elapsedTime() : float
+  public static setElapsedTime(elpasedTime : float) : float
+}
+
+abstract class LivingHome {
+  protected mLivingBeings : vector<LivingBeings*> 
+  protected mForm : QRectF
+  protected mColor : QColor
+
+  public livingBeing() const : vector<LivingBeing*>
+  public form() const : QRectF
+  public color() const : QColor
+
+  public die(livingBeing : LivingBeing*) : void
+
+  public virtual birth(livingBeing : LivingBeing) = 0 : void
+  public virtual initPos() = 0 : void
+}
+
+class Random {
+  public static generate() : float
+  public static generate(min : int, max : int) : int
+  public static generate(min : float, max : float) : float
+  public static generate(min : double, max : double) : double
+  public static randomPointOnCircle(radius : float) : QPoint
+  public static randomHumanSkinColor() : QColor
+  public static randomHumanName() : QString
+}
+
+QMainWindow <|-- BeeEcoSystem
+BeeEcoSystem --o EcoSystem
+
+QGraphicsItem <|-- LivingBeing
+QGraphicsItem <|-- LivingHome
+
+LivingBeing <|-- ObjectMotion
+LivingBeing <|-- FloweringPlant
+
+ObjectMotion <|-- ForagingInsect
+ObjectMotion <|-- Human
+
+FloweringPlant <|-- Aubergine
+FloweringPlant <|-- Tomato
+FloweringPlant <|-- Courgette
+
+ForagingInsect <|-- Bee
+ForagingInsect <|-- AsianHornet
+
+QGraphicsScene <|-- EcoSystem
+QGraphicsScene "1" --o QGraphicsView
+QGraphicsScene "1" *--o "*" QGraphicsItem
+
+Swarm <|-- SwarmBees
+Swarm <|-- SwarmAsianHornets
+
+LivingHome <|-- Swarm
+LivingHome <|-- Home
+
+LivingHome "1"--o "1..*" LivingBeing
+@enduml
+
+' AsianHornet quitte Swarm, avec leavingSwarm() puis si elle trouve un 
+' Swarm de Bee, on a isColliding(SwarmBees) qui renvoie true,
+' dans ce cas elle appelle numberOfAsianHornetToLeave(positionSwarmBees : QPoint)
+' de eco system, cette fonction va prendre un % du nombre total de Bee
+' et va envoyer un nombre de Hornet en conséquent, en faisant
+' .leavingSwarmTowardsBees(positionSwarmBees : QPoint) sur les Hornets
+' et en leur donnant la position de la Swarm de Bee, une fois le Swarm atteint 
+' les Hornets auront le isColliding(SwarmBees) qui sera a true, puis dans le
+' Swarm elle ont des isColliding(Bee) puis ils en tuent qu'une seule 
+' (incrémentation de mKillsCounter : int) dès que leur mKillsCounter est à 1
+' elle font .GettingBackToSwarm(positionAsianHornetSwarm : QPoint),
+' Une fois leur Swarm atteint à nouveau leur mKillsCounter retourne à 0

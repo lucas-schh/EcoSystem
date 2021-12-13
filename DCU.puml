@@ -1,0 +1,50 @@
+
+
+@startuml DCU
+left to right direction
+skinparam style strictuml
+skinparam packageStyle rect
+skinparam defaultfontname Verdana
+actor Utilisateur as U
+title "Diagramme des cas d'utilisations"
+
+rectangle "Rentrer Paramètre" {
+(Rentrer paramètres) as rp 
+(Nombre d'abeilles) as nb
+(Nombre de frelons asiatiques) as na
+(Nombre d'humains) as h
+(Nombre de plantes à fleurs) as fp
+U -- rp
+rp <|--nb
+rp <|--na
+rp <|--h
+rp <|--fp
+}
+
+rectangle "Gerer la  Simulation" {
+(Demarrer simulation) as ds 
+(Mettre en pause la simulation) as mp
+(Faire un pas de simulation) as fps
+(Cliquer sur Demarrer simulation) as cds
+(Cliquer sur Mettre en pause la simulation) as cmp
+(Cliquer sur Faire un pas de simulation) as cfps
+
+U -- ds
+U -- mp
+U -- fps
+ds <|--cds
+mp <|-- cmp
+fps <|--cfps
+
+}
+
+rectangle "Se renseigner sur l'application" {
+
+    (À propos) as ap
+    (Cliquer sur À propos) as cap
+
+    U -- ap
+    ap <|-- cap
+
+}
+@enduml
